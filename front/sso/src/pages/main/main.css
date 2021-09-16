@@ -1,0 +1,164 @@
+.react-rainbow-admin-app_sidebar-container {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: calc(100vh - 68px);
+    margin-top: 68px;
+    background-color: #fff;
+    z-index: 10;
+    padding: 14px 5px;
+}
+
+.react-rainbow-admin-app_sidebar {
+    width: 88px;
+    height: 100%;
+    border-right: 1px solid #f4f6f9;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.react-rainbow-admin-app_router-container {
+    padding-top: 68px;
+    padding-left: 88px;
+    background-color: #f4f6f9;
+    min-height: 100vh;
+}
+
+.react-rainbow-admin-app_sidebar-item {
+    margin-bottom: 10px;
+    border-radius: 12px;
+}
+.react-rainbow-admin-app_sidebar-item:hover {
+    background-color: rgb(246, 247, 249);
+}
+
+.react-rainbow-admin-app_sidebar-back-button-container {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .react-rainbow-admin-app_sidebar-container {
+        height: 100vh;
+        margin-top: 0;
+        transform: translateX(0%);
+        transition: transform 230ms linear, opacity 230ms linear;
+    }
+
+    .react-rainbow-admin-app_router-container {
+        padding-top: 116px;
+        padding-left: 0;
+    }
+
+    .react-rainbow-admin-app_sidebar-container--sidebar-hidden {
+        transform: translateX(-100%);
+        transition: transform 250ms linear, opacity 250ms linear;
+    }
+
+    .react-rainbow-admin-app_sidebar-back-button-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-grow: 2;
+        align-items: flex-end;
+        padding-top: 12px;
+    }
+
+    .react-rainbow-admin-app_sidebar-back-button-icon {
+        color: #000;
+    }
+
+    .react-rainbow-admin-app_backdrop {
+        display: unset;
+        width: 100vw;
+        height: 100vh;
+        /*background-color: rgba(82, 95, 127, 0.4);*/
+        position: fixed;
+        /*z-index: 99999;*/
+        top: 0;
+        left: 0;
+    }
+}
+
+.rainbow-sidebar-item_label{
+    font-family: 'Google Sans',Roboto,Arial,sans-serif;
+    font-size: 0.795rem!important;
+    color: #3c4043!important;
+    letter-spacing: .01785714em!important;
+}
+
+.info_form{
+    margin: 0 auto;
+    margin-bottom: 30px;
+    /*max-width: 786px;*/
+    font-weight: 400;
+    border-radius: 7.5px;
+    border: 2px solid #f0f0f0f0;
+    background-color: #fff;
+}
+
+.no-focus{
+    outline: none!important;
+    box-shadow: none!important;
+}
+
+.MuiAccordionDetails-root{
+    display: inherit!important;
+    /*max-width: 500px!important;*/
+    padding-bottom: 1px!important;
+}
+
+.MuiPaper-rounded{
+    border-radius: unset!important;
+}
+.MuiPaper-elevation1{
+    box-shadow: none!important;
+}
+.MuiPaper-root{
+    background-color: unset!important;
+}
+.MuiAccordionSummary-content{
+    flex-wrap: wrap;
+}
+.react-tel-input .form-control{
+    width: inherit!important;
+}
+.accordion_form{
+    border-radius: 8px;
+    border: 1px solid #dadce0;
+}
+.main_padding-form{
+    padding: 30px 20px 35px 20px;
+}
+
+.selectedBtnGroup{
+    border: 2px solid #1a73e8!important;
+    background-color: rgba(26, 115, 232, 0.08) !important;
+}
+
+.rainbow-tab--active{
+    background-color: #f0f0f0!important;
+}
+.rainbow-tab--active::before{
+    border-style: unset!important;
+}
+.rainbow-tab--active::after{
+    border-style: unset!important;
+}
+.alt-font{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+}
+.rainbow-tabset, .rainbow-tabset_inner-container{
+    overflow-x: unset!important;
+    overflow-y: unset!important;
+}
+.rainbow-sidebar-item--active .rainbow-sidebar-item_icon, .rainbow-sidebar-item_action:hover .rainbow-sidebar-item_icon, .rainbow-sidebar-item_action:active .rainbow-sidebar-item_icon, .rainbow-sidebar-item_action:focus .rainbow-sidebar-item_icon {
+    background-color: unset!important;
+    outline: 0;
+}
+.MuiAccordion-root.Mui-expanded:before{
+    opacity: 1!important;
+}
+.label_margin_left{
+    margin-right: 5px!important;
+}
