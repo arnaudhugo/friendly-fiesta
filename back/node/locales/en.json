@@ -1,0 +1,15 @@
+{
+	"400Password": "Bad request: password missing.",
+	"400Match": "Bad request: email and password doesn't match.",
+	"400oauth": "Bad request: usrtoken is invalid.",
+	"400Params": "Bad request: please send good params.",
+
+	"403": "Bad request: Unauthorized.",
+
+	"404": "Not found: data not found.",
+	"404User": "Not found: user not found.",
+	"404oauth": "Not found: usrtoken not found.",
+	"404Email" : "Not found: email not found.",
+
+	"500": "Bad request: something went wrong."
+}

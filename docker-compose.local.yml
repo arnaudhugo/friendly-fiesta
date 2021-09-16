@@ -1,0 +1,162 @@
+version: '3'
+networks:
+  db-net:
+    internal: true
+  adm-net:
+    internal: true
+  proxy:
+
+services:
+  nginx:
+    image: jwilder/nginx-proxy:alpine
+    container_name: nginx
+    restart: always
+    labels:
+        com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: 'true'
+    ports:
+        - 80:80
+        - 443:443
+    volumes:
+        - ./proxy/conf/proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+        - ./proxy/logs/global:/var/log/nginx
+        - ./proxy/vhost:/etc/nginx/vhost.d
+        - ./proxy/data/html:/usr/share/nginx/html
+        - ./proxy/data/certs:/etc/nginx/certs:ro
+        - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+        - proxy
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    restart: always
+    volumes:
+        - ./proxy/vhost:/etc/nginx/vhost.d
+        - ./proxy/data/html:/usr/share/nginx/html
+        - ./proxy/data/certs:/etc/nginx/certs:rw
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+        - nginx
+    networks:
+        - proxy
+            
+  back-python:
+    build:
+      context: ./
+      dockerfile: Dockerfile.python.back
+    container_name: back-python
+    tty: true
+    restart: always
+    depends_on: 
+      - rethink
+    networks:
+      - db-net
+      - proxy
+    expose:
+      - 8080
+    healthcheck:
+      test: exit $$( curl -so /dev/null --fail http://127.0.0.1:8080 && echo 0 || echo 1 )
+      interval: 30s
+      timeout: 1s
+      retries: 1
+    volumes:
+      - ./back/python:/home/api:ro
+    environment:
+      VIRTUAL_HOST: auth.${DOMAIN}
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: auth.${DOMAIN}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+  
+  back-node:
+    build:
+      context: ./
+      dockerfile: Dockerfile.node.back
+    container_name: back-node
+    tty: true
+    restart: always
+    depends_on: 
+      - rethink
+    networks:
+      - db-net
+      - proxy
+    expose:
+      - 8080
+    healthcheck:
+      test: exit $$( curl -so /dev/null --fail http://127.0.0.1:8080 && echo 0 || echo 1 )
+      interval: 30s
+      timeout: 1s
+      retries: 1
+    volumes:
+      - ./back/node:/home/api:ro
+    environment:
+      VIRTUAL_HOST: project.${DOMAIN}
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: project.${DOMAIN}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+
+  rethink:
+    image: rethinkdb:latest
+    container_name: rethink
+    restart: always
+    networks:
+      - db-net
+      - adm-net
+    expose:
+      - 8080
+      - 28015
+    volumes:
+      - ./back/rethink/data:/data
+    command: rethinkdb --bind all -d /data
+      
+  admin-goaccess:
+    image: nginx:1.21.0
+    container_name: admin-goaccess
+    restart: always
+    volumes:
+      - ./admin/services/goaccess/front:/usr/share/nginx/html:ro
+    networks:
+      - adm-net
+
+  admin-goaccesscli:
+    image: allinurl/goaccess
+    container_name: admin-goaccesscli
+    restart: always
+    volumes:
+      - ./proxy/logs/global/:/logs/:ro
+      - ./admin/services/goaccess/conf:/etc/goaccess/
+      - ./admin/services/front:/results/
+    entrypoint: "watch `goaccess /logs/access.log -o /results/index.html --log-format=COMBINED;`"
+
+  admin-php:
+    image: php:fpm-alpine
+    container_name: admin-php
+    restart: always
+    volumes:
+      - ./admin/front:/script:ro
+      - ./admin/services/goaccess/front:/stats:ro
+    networks:
+      - adm-net
+    environment:
+      HOST: ${DOMAIN}
+
+  admin-nginx:
+    image: nginx:1.21.0
+    container_name: admin-nginx
+    restart: always
+    volumes:
+      - ./admin/front:/usr/share/nginx/html:ro
+      - ./admin/conf/admin.conf:/etc/nginx/conf.d/default.conf:ro
+    links:
+      - rethink
+      - admin-goaccess
+      - admin-php
+    networks:
+      - proxy
+      - adm-net
+      - db-net
+    environment:
+      VIRTUAL_HOST: admin.${DOMAIN}
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: admin.${DOMAIN}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+    

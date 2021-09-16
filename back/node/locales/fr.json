@@ -1,0 +1,15 @@
+{
+  "400Password" : "Requête incorrecte: le mot de passe est manquant.",
+  "400Match" : "Requête incorrecte: l'email et le mot de passe ne correspondent pas.",
+  "400oauth" : "Requête incorrecte: usrtoken invalide.",
+  "400Params": "Requête incorrecte: envoyer le(s) bon(s) paramètre(s).",
+
+  "403" : "Requête incorrecte: autorisation refusée.",
+
+  "404": "Not found: data non trouvé(e)",
+  "404User": "Not found: utilisateur non trouvé.",
+  "404oauth" : "Requête incorrecte: usrtoken est manquant.",
+  "404Email" : "Requête incorrecte: l'email est manquant.",
+
+  "500" : "Requête incorrecte: erreur interne."
+}
