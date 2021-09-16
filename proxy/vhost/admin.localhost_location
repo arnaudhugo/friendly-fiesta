@@ -1,0 +1,1 @@
+access_log  /customlogs/admin.localhost.log  main;

@@ -1,0 +1,17 @@
+version: '3'
+networks:
+  default:
+
+services:
+  builder:
+    build:
+      context: ./
+      dockerfile: Dockerfile.front.sso
+      target: builder
+    container_name: build-sso
+    networks:
+      - default
+    volumes:
+      - ./front/sso:/app/
+    environment:
+      REACT_APP_ENDPOINT: http://ssoapi.${DOMAIN}

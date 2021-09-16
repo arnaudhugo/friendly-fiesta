@@ -22,6 +22,7 @@ services:
         - ./proxy/vhost:/etc/nginx/vhost.d
         - ./proxy/data/html:/usr/share/nginx/html
         - ./proxy/data/certs:/etc/nginx/certs:ro
+        - ./proxy/logs/services:/customlogs
         - /var/run/docker.sock:/tmp/docker.sock:ro
     networks:
         - proxy
@@ -39,19 +40,18 @@ services:
         - nginx
     networks:
         - proxy
-            
-  back-python:
+
+  back-sso:
     build:
       context: ./
-      dockerfile: Dockerfile.python.back
-    container_name: back-python
+      dockerfile: Dockerfile.back.sso
+      target: prod
+    container_name: back-sso
     tty: true
     restart: always
-    depends_on: 
-      - rethink
     networks:
-      - db-net
       - proxy
+      - db-net
     expose:
       - 8080
     healthcheck:
@@ -60,13 +60,38 @@ services:
       timeout: 1s
       retries: 1
     volumes:
-      - ./back/python:/home/api:ro
+      - ./back/sso/src:/home/api:ro
     environment:
-      VIRTUAL_HOST: auth.${DOMAIN}
+      VIRTUAL_HOST: ssoapi.${DOMAIN}
       VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: auth.${DOMAIN}
+      LETSENCRYPT_HOST: ssoapi.${DOMAIN}
       LETSENCRYPT_EMAIL: ${EMAIL}
-  
+
+  front-sso:
+    build:
+      context: ./
+      dockerfile: Dockerfile.front.sso
+      target: prod
+    container_name: front-sso
+    tty: true
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - 8080:80
+    healthcheck:
+      test: exit $$( curl -so /dev/null --fail http://127.0.0.1:80 && echo 0 || echo 1 )
+      interval: 30s
+      timeout: 1s
+      retries: 1
+    volumes:
+      - ./front/sso/prod/:/app
+    environment:
+      VIRTUAL_HOST: sso.${DOMAIN}
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: sso.${DOMAIN}
+      LETSENCRYPT_EMAIL: ${EMAIL}
+
   back-node:
     build:
       context: ./
@@ -74,7 +99,7 @@ services:
     container_name: back-node
     tty: true
     restart: always
-    depends_on: 
+    depends_on:
       - rethink
     networks:
       - db-net
@@ -105,9 +130,9 @@ services:
       - 8080
       - 28015
     volumes:
-      - ./back/rethink/data:/data
+      - ./db/rethink/data:/data
     command: rethinkdb --bind all -d /data
-      
+
   admin-goaccess:
     image: nginx:1.21.0
     container_name: admin-goaccess
@@ -122,10 +147,12 @@ services:
     container_name: admin-goaccesscli
     restart: always
     volumes:
-      - ./proxy/logs/global/:/logs/:ro
+      - ./proxy/logs/services:/logs/:ro
       - ./admin/services/goaccess/conf:/etc/goaccess/
-      - ./admin/services/front:/results/
-    entrypoint: "watch `goaccess /logs/access.log -o /results/index.html --log-format=COMBINED;`"
+      - ./admin/services/goaccess/front:/results/
+    entrypoint: "watch `goaccess /logs/sso.${DOMAIN}.log -o /results/sso.html --log-format=COMBINED;
+                        goaccess /logs/ssoapi.${DOMAIN}.log -o /results/sso-api.html --log-format=COMBINED;
+                        goaccess /logs/admin.${DOMAIN}.log -o /results/admin.html --log-format=COMBINED`"
 
   admin-php:
     image: php:fpm-alpine
@@ -153,10 +180,8 @@ services:
     networks:
       - proxy
       - adm-net
-      - db-net
     environment:
       VIRTUAL_HOST: admin.${DOMAIN}
       VIRTUAL_PORT: 80
       LETSENCRYPT_HOST: admin.${DOMAIN}
       LETSENCRYPT_EMAIL: ${EMAIL}
-    
