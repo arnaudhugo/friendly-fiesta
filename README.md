@@ -12,7 +12,8 @@ chmod +x /usr/local/bin/docker-compose
 after clonning:
 * Dirty rights allowance for the db
   ```bash
-  chmod -R 777 ./back/rethink/
+  mkdir ./db
+  chmod -R 777 ./db/
   ```
 
 * Edit `sample.env` then copy past his content into your `.env`
@@ -23,5 +24,6 @@ after clonning:
   
 * Launch the local env
   ```bash
+  docker-compose -f docker-compose.build.yml up -d --build
   docker-compose -f docker-compose.local.yml up -d --build
   ```
