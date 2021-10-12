@@ -14,13 +14,13 @@ const apitoken      = "c9a94ee6579145b7b9b5c7dbfff70ab8";
 const registry_id   = "5a5d6b6a-9879-48ac-8127-a998e4bc88ca";
 
 router.get('/', async (req, res) => {
-    console.log('1')
-
+    const uuid = new TokenGenerator().generate();
     const body = {
         "apitoken":     apitoken,
         "asked":        ['id', 'username', 'email'],
         "valid_until":  180
     }
+
     let response = await fetch(
         `${sso_back}/extern/key`, 
         {
@@ -31,13 +31,9 @@ router.get('/', async (req, res) => {
     )
     response = await response.json();
     
-    let uuid = new TokenGenerator().generate();
-
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
 
-    console.log(response.data.key, response.data.secret)
-    
-    let ret = {
+    const ret = {
         id: uuid,
         url: `${sso_front}/sso/extern/${response.data.key}/${response.data.auth}/accept`
     }
@@ -69,7 +65,6 @@ router.get('/:uuid', async (req, res) => {
         ).then(
             response => response.json()
         ).then(json => {
-            console.log(json)
             res.status(200).json({ code: 200, data: json.data, message: "" });
         })
     });
