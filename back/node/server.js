@@ -29,7 +29,7 @@ const swaggerDefinition = {
         version: '1.0',
         description: '',
     },
-    host: 'https://api.gpe.newtechstack.fr',
+    host: 'api.gpe.newtechstack.fr',
     schemes: ['https'],
     basePath: '/v1',
     securityDefinitions: {
