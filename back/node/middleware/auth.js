@@ -1,13 +1,39 @@
 'use strict';
 
 const config    = require('../config/config');
+const jwt       = require('jsonwebtoken');
+const fetch     = require('node-fetch');
 const i18n      = require('i18n');
+
+async function refreshPubKey() {
+    const body = {
+        "apitoken": config.apitoken
+    }
+
+    const response = await fetch(
+        `${config.sso_back}/extern/public`, 
+        {
+            method: 'post',
+            body:    JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
+        }
+    )
+
+    return response.data.public_key
+}
 
 function user() {
     return (req, res, next) => {
         if (req.headers.usrtoken) {
-            req.usrtoken = req.headers.usrtoken;
-            next();
+            const publicKey = await refreshPubKey();
+            console.log(publicKey)
+            jwt.verify(req.headers.usrtoken, publicKey, { leeway = 0, issuer = "auth:back", audience: `auth:${config.registry_id}`, algorithms = ['RS256'] }, function(err, user) {
+                if (err) {
+                    res.status(400).json({ code: 400, data: null, message: i18n.__('400oauth')})
+                }
+                req.usrtoken = req.headers.usrtoken;
+                next();
+            });
         }
         else
             res.status(403).json({ code: 400, data: null, message: i18n.__('404oauth')})

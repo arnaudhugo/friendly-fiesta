@@ -10,6 +10,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "i18n": "^0.13.3",
+    "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.0",
     "rethinkdb": "^2.4.2",
     "swagger-jsdoc": "^6.1.0",
