@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
 
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
 
-    console.log(response.data.secret)
+    console.log(response.data.key, response.data.secret)
     
     let ret = {
         id: uuid,
