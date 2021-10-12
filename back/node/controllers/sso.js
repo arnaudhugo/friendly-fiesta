@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
 
 /**
 * @swagger
-* /sso/:
+* /sso/{uuid}:
 *   get:
 *     tags:
 *       - SSO

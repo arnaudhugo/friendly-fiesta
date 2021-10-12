@@ -42,7 +42,7 @@ router.get('/', auth.user(), async (req, res) => {
 
 /**
 * @swagger
-* /project/:
+* /project/{id}:
 *   get:
 *     tags:
 *       - Project
@@ -145,7 +145,7 @@ router.post('/', auth.user(), async (req, res) => {
 
 /**
 * @swagger
-* /project/:
+* /project/{id}:
 *   put:
 *     tags:
 *       - Project
@@ -213,7 +213,7 @@ router.put('/:id', auth.user(), async (req, res) => {
 
 /**
 * @swagger
-* /project/:
+* /project/{id}:
 *   delete:
 *     tags:
 *       - Project
