@@ -23,7 +23,6 @@ const registry_id   = "5a5d6b6a-9879-48ac-8127-a998e4bc88ca";
 *     summary: Get information to connect
 *     consumes:
 *       - application/json
-*     parameters:
 *     responses:
 *       200:
 *         description: Ok
