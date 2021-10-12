@@ -66,51 +66,51 @@ module.exports.setup = async function setup() {
     });
 };
 
-const setup = async function() {
-    const connection = r.connect({ host: config.host, port: config.port, db: config.database })
-    // , (error, connection) => {
-    //     if (error && error.name === 'ReqlDriverError' && error.message.indexOf('Could not connect') === 0 && ++count < 31) {
-    //         console.log(error);
-    //         return;
-    //     }
+// const setup = async function() {
+//     const connection = r.connect({ host: config.host, port: config.port, db: config.database })
+//     // , (error, connection) => {
+//     //     if (error && error.name === 'ReqlDriverError' && error.message.indexOf('Could not connect') === 0 && ++count < 31) {
+//     //         console.log(error);
+//     //         return;
+//     //     }
 
         
-    // });
+//     // });
 
-    // Create DATABASE if not exist
-    await r.dbList()
-        .contains(config.database)
-        .do(databaseExists =>
-            r.branch(databaseExists, { dbs_created: 0 }, r.dbCreate(config.database))
-        )
-        .run(connection)
-        .then(() => console.log('DB done'))
-        .catch(error => {
-            return
-        });
+//     // Create DATABASE if not exist
+//     await r.dbList()
+//         .contains(config.database)
+//         .do(databaseExists =>
+//             r.branch(databaseExists, { dbs_created: 0 }, r.dbCreate(config.database))
+//         )
+//         .run(connection)
+//         .then(() => console.log('DB done'))
+//         .catch(error => {
+//             return
+//         });
 
-    // const tableProject = r.table('project');
-    const tableOptions = {
-        primaryKey:'id',
-        durability:'hard'
-    };
+//     // const tableProject = r.table('project');
+//     const tableOptions = {
+//         primaryKey:'id',
+//         durability:'hard'
+//     };
 
-    const table = r.table('project');
-    await r.tableList().contains('project')
-        .do(r.branch(r.row, table, r.do(function() {
-            console.log('youhou')
-            return r.tableCreate('project', tableOptions)
-                .do(function() {
-                    console.log('table done')
-                    return table;
-                });
-        })
-    ));
+//     const table = r.table('project');
+//     await r.tableList().contains('project')
+//         .do(r.branch(r.row, table, r.do(function() {
+//             console.log('youhou')
+//             return r.tableCreate('project', tableOptions)
+//                 .do(function() {
+//                     console.log('table done')
+//                     return table;
+//                 });
+//         })
+//     ));
 
-    connection.close();
-};
+//     connection.close();
+// };
 
-module.exports.setup = setup;
+// module.exports.setup = setup;
     
 
     

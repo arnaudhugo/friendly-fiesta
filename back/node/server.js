@@ -26,7 +26,7 @@ const swaggerDefinition = {
         version: '1.0',
         description: '',
     },
-    host: 'http://project.localhost',
+    host: 'http://project.localhost/',
     schemes: ['http'],
     basePath: '/api/v1',
     securityDefinitions: {
