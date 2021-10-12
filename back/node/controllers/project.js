@@ -70,8 +70,34 @@ router.get('/:id', auth.user(), async (req, res) => {
     r.table(tableName)
         .filter({ userId: req.userId, id: id })
         .run(req._rdb)
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
+        .then(result => {
+            let advancement = {
+                "percent": "30",
+                "start_date": "timestamp",
+                "end_date": "timestamp",
+                "investors": {
+                    "stats": {
+                        "number": 3,
+                        "average_invest": 300.00,
+                        "lowest_percent": 1.20
+                    },
+                    "list": [
+                        {
+                            "usr_id": "iduser",
+                            "percent": "1.28",
+                            "amount": 400.00
+                        },
+                        {
+                            "usr_id": "iduser",
+                            "percent": "1.20",
+                            "amount": 200.00
+                        }
+                    ]
+                }
+            }
+            result.advancement = advancement;
+            res.status(200).json({ code: 200, data: result, message: "" })
+        }).catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
@@ -114,6 +140,8 @@ router.get('/:id', auth.user(), async (req, res) => {
 *                   type: string
 *                 max_percent:
 *                   type: float
+*                 months:
+*                   type: integer
 *         required: true
 *     responses:
 *       200:
@@ -130,7 +158,8 @@ router.post('/', auth.user(), async (req, res) => {
         request:            {
             amount:         req.body.request.amount,
             currency:       req.body.request.currency,
-            max_percent:    req.body.request.max_percent
+            max_percent:    req.body.request.max_percent,
+            months:         req.body.request.months
         }
     };
 
