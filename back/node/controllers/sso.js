@@ -6,7 +6,7 @@ const auth              = require('../middleware/auth.js');
 const TokenGenerator    = require('uuid-token-generator');
 const TinyDB            = require('tinydb');
 
-const test_db       = new TinyDB('./test.db');
+const test_db       = new TinyDB('/tmp/test.db');
 
 const sso_front     = 'http://135.125.203.6:8079';
 const sso_back      = 'http://135.125.203.6:8083';
