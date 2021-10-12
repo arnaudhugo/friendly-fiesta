@@ -13,6 +13,23 @@ const sso_back      = 'http://135.125.203.6:8083';
 const apitoken      = "c9a94ee6579145b7b9b5c7dbfff70ab8";
 const registry_id   = "5a5d6b6a-9879-48ac-8127-a998e4bc88ca";
 
+/**
+* @swagger
+* /sso:
+*   get:
+*     tags:
+*       - SSO
+*     name: Get information to connect
+*     summary: Get information to connect
+*     consumes:
+*       - application/json
+*     parameters:
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
 router.get('/', async (req, res) => {
     const uuid = new TokenGenerator().generate();
     const body = {
@@ -34,13 +51,37 @@ router.get('/', async (req, res) => {
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
 
     const ret = {
-        id: uuid,
+        uuid: uuid,
         url: `${sso_front}/sso/extern/${response.data.key}/${response.data.auth}/accept`
     }
 
     res.status(200).json({ code: 200, data: ret, message: "" });
 });
 
+/**
+* @swagger
+* /sso/:uuid:
+*   get:
+*     tags:
+*       - SSO
+*     name: Pending connection
+*     summary: Pending connection
+*     consumes:
+*       - application/json
+*     parameters:
+*       - name: query
+*         in: query
+*         schema:
+*           type: object
+*           properties:
+*             uuid:
+*               type: string
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
 router.get('/:uuid', async (req, res) => {
     const uuid = req.params.uuid;
 
