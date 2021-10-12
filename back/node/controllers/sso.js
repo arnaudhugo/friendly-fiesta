@@ -69,9 +69,10 @@ router.get('/', async (req, res) => {
 *       - application/json
 *     parameters:
 *       - name: uuid
-*         in: path
+*         in: query
 *         schema:
 *           type: string
+*           required: true
 *     responses:
 *       200:
 *         description: Ok
