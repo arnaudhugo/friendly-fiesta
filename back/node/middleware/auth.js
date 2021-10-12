@@ -10,7 +10,7 @@ async function refreshPubKey() {
         "apitoken": config.apitoken
     }
 
-    const response = await fetch(
+    let response = await fetch(
         `${config.sso_back}/extern/public`, 
         {
             method: 'post',
@@ -18,6 +18,7 @@ async function refreshPubKey() {
             headers: { 'Content-Type': 'application/json' },
         }
     )
+    response = response.json();
 
     return response.data.public_key
 }
