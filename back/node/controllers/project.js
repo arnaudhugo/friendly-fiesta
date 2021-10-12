@@ -12,6 +12,8 @@ const tableName = "project";
 * @swagger
 * /project:
 *   get:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Project
 *     name: Get all project for an user
@@ -44,6 +46,8 @@ router.get('/', auth.user(), async (req, res) => {
 * @swagger
 * /project/{id}:
 *   get:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Project
 *     name: Get one project for an user
@@ -81,6 +85,8 @@ router.get('/:id', auth.user(), async (req, res) => {
 * @swagger
 * /project:
 *   post:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Project
 *     name: Create one project
@@ -146,6 +152,8 @@ router.post('/', auth.user(), async (req, res) => {
 * @swagger
 * /project/{id}:
 *   put:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Project
 *     name: Unpdate one project for an user
@@ -213,6 +221,8 @@ router.put('/:id', auth.user(), async (req, res) => {
 * @swagger
 * /project/{id}:
 *   delete:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Project
 *     name: Delete one project for an user

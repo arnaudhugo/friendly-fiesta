@@ -12,6 +12,8 @@ const tableName = "invest";
 * @swagger
 * /invest:
 *   post:
+*     security:
+*       - usrtoken: []
 *     tags:
 *       - Invest
 *     name: Invest to an project
