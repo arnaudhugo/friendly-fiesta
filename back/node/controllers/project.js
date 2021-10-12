@@ -52,7 +52,7 @@ router.get('/', auth.user(), async (req, res) => {
 *       - application/json
 *     parameters:
 *       - name: id
-*         in: query
+*         in: path
 *         required: true
 *     responses:
 *       200:
@@ -155,7 +155,7 @@ router.post('/', auth.user(), async (req, res) => {
 *       - application/json
 *     parameters:
 *       - name: id
-*         in: query
+*         in: path
 *         required: true
 *       - name: body
 *         in: body
@@ -221,6 +221,12 @@ router.put('/:id', auth.user(), async (req, res) => {
 *     summary: Delete one project for an user
 *     consumes:
 *       - application/json
+*     parameters:
+*       - name: id
+*         in: path
+*         schema:
+*           type: string
+*         required: true
 *     responses:
 *       200:
 *         description: Ok
