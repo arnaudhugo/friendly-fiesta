@@ -12,6 +12,8 @@ const auth                  = require('./middleware/auth.js');
 const connect               = require('./helpers/rethink');
 const controllers           = loader.load(__dirname + "/controllers");
 
+const test_db       = new TinyDB('/tmp/test.db');
+
 i18n.configure({
     locales:['en', 'fr'],
     directory: __dirname + '/locales'
@@ -90,13 +92,16 @@ app.use(function(err, req, res, next) {
 
 app.use(connect.close); 
 
-connect.setup().then(() => {
-    const server = app.listen(port, () => {
-        let host = server.address().address;
-        host = (host === '::' ? 'localhost' : host);
-        console.log('1: We are live on ' + host + ':' + port);
-    });
-})
+test_db.onReady = function() {
+    console.log('tiny db up')
+    connect.setup().then(() => {
+        const server = app.listen(port, () => {
+            let host = server.address().address;
+            host = (host === '::' ? 'localhost' : host);
+            console.log('1: We are live on ' + host + ':' + port);
+        });
+    })
+}
 
 process.on("uncaughtException", function(err) {
     console.error("An uncaughtException was found, the program will end. " + err + ", stacktrace: " + err.stack);
