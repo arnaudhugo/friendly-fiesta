@@ -12,6 +12,7 @@ const auth                  = require('./middleware/auth.js');
 const connect               = require('./helpers/rethink');
 const controllers           = loader.load(__dirname + "/controllers");
 
+const TinyDB            = require('tinydb');
 const test_db       = new TinyDB('/tmp/test.db');
 
 i18n.configure({
