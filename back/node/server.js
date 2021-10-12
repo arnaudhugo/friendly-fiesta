@@ -58,19 +58,15 @@ const router = express.Router();
 
 router.use('/doc', swaggerUi.serve, auth.authDoc(), swaggerUi.setup(swaggerSpec));
 
-
 for (const key in controllers) {
     router.use("/" + key, controllers[key]);
 }
 
-// router.get("/", (req, res) =>
-//     res.send('Hello World ' + new Date())
-// );
+app.use('/v1', router);
+
 app.get("*", (req, res) =>
     res.send('Hello World ' + new Date())
 );
-
-app.use('/v1', router);
 
 app.use(function(err, req, res, next) {
     if (res.headerSent)
