@@ -27,7 +27,7 @@ function user() {
         if (req.headers.usrtoken) {
             const publicKey = refreshPubKey();
             console.log(publicKey)
-            jwt.verify(req.headers.usrtoken, publicKey, { issuer = "auth:back", audience: `auth:${config.registry_id}`, algorithms = ['RS256'] }, function(err, user) {
+            jwt.verify(req.headers.usrtoken, publicKey, { leeway: 0, issuer: "auth:back", audience: `auth:${config.registry_id}`, algorithms: ['RS256'] }, function(err, user) {
                 if (err) {
                     res.status(400).json({ code: 400, data: null, message: i18n.__('400oauth')})
                 }
