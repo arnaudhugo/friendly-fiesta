@@ -25,7 +25,7 @@ async function refreshPubKey() {
 function user() {
     return (req, res, next) => {
         if (req.headers.usrtoken) {
-            const publicKey = await refreshPubKey();
+            const publicKey = refreshPubKey();
             console.log(publicKey)
             jwt.verify(req.headers.usrtoken, publicKey, { leeway = 0, issuer = "auth:back", audience: `auth:${config.registry_id}`, algorithms = ['RS256'] }, function(err, user) {
                 if (err) {
