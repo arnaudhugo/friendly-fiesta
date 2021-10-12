@@ -131,7 +131,6 @@ router.post('/', auth.user(), async (req, res) => {
     r.table(tableName)
         .insert(project)
         .run(req._rdb)
-        .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
             console.log(error);
@@ -154,7 +153,7 @@ router.post('/', auth.user(), async (req, res) => {
 *     consumes:
 *       - application/json
 *     parameters:
-*       - name: id
+*       - name: id+
 *         in: path
 *         required: true
 *       - name: body
