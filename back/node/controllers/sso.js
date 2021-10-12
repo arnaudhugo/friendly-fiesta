@@ -33,20 +33,12 @@ router.get('/', async (req, res) => {
     
     let uuid = new TokenGenerator().generate();
 
-    // test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret}, function(err, key, value) {
-    //     if (err) {
-    //         res.status(500).json({ code: 500, data: null, message: err });
-    //     }
-        
-    //     console.log('[setInfo] ' + key + ' : ' + value);
-    // });
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
     
     let ret = {
         id: uuid,
         url: `${sso_front}/sso/extern/${response.data.key}/${response.data.auth}/accept`
     }
-    console.log(response, ret)
 
     res.status(200).json({ code: 200, data: ret, message: "" });
 });
@@ -54,57 +46,28 @@ router.get('/', async (req, res) => {
 router.get('/:uuid', async (req, res) => {
     const uuid = req.params.id;
 
-    test_db.onReady = async function() {
-        let re = await test_db.getInfo(uuid);
+    let re = await test_db.getInfo(uuid);
 
-        console.log(re)
+    console.log(re)
 
-        const body = {
-            "apitoken":     apitoken,
-            "secret":       re.secret
-        }
-        
-        let response = await fetch(
-            `${sso_back}/extern/key/${key}/token`, 
-            {
-                method: 'post',
-                body:    JSON.stringify(body),
-                headers: { 'Content-Type': 'application/json' },
-            }
-        )
-        response = await response.json();
-
-        console.log(response)
-        
-        res.status(200).json({ code: 200, data: response.data, message: "" });
-        
-        // test_db.getInfo(uuid, async function(err, key, value) {
-        //     if (err) {
-        //         res.status(500).json({ code: 500, data: null, message: err });
-        //     }
-            
-        //     console.log('[setInfo] ' + key + ' : ' + value);
-
-        //     const body = {
-        //         "apitoken":     apitoken,
-        //         "secret":       value.secret
-        //     }
-            
-        //     let response = await fetch(
-        //         `${sso_back}/extern/key/${key}/token`, 
-        //         {
-        //             method: 'post',
-        //             body:    JSON.stringify(body),
-        //             headers: { 'Content-Type': 'application/json' },
-        //         }
-        //     )
-        //     response = await response.json();
-
-        //     console.log(response)
-            
-        //     res.status(200).json({ code: 200, data: response.data, message: "" });
-        // });
+    const body = {
+        "apitoken":     apitoken,
+        "secret":       re.secret
     }
+    
+    let response = await fetch(
+        `${sso_back}/extern/key/${key}/token`, 
+        {
+            method: 'post',
+            body:    JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json' },
+        }
+    )
+    response = await response.json();
+
+    console.log(response)
+    
+    res.status(200).json({ code: 200, data: response.data, message: "" });
 });
 
 module.exports = router;
