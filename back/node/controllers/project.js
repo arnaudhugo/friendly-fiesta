@@ -97,6 +97,17 @@ router.get('/:id', auth.user(), async (req, res) => {
 *               type: string
 *             description:
 *               type: string
+*             photo:
+*               type: array
+*             request:
+*               type: object
+*               properties:
+*                 amount:
+*                   type: float
+*                 currency:
+*                   type: string
+*                 max_percent:
+*                   type: float
 *         required: true
 *     responses:
 *       200:
@@ -106,9 +117,15 @@ router.get('/:id', auth.user(), async (req, res) => {
 */
 router.post('/', auth.user(), async (req, res) => {
     let project = {
-        userId:         req.usrtoken,
-        name:           req.body.name,
-        description:    req.body.description
+        userId:             req.usrtoken,
+        name:               req.body.name,
+        description:        req.body.description,
+        photo:              req.body.photo,
+        request:            {
+            amount:         req.body.request.amount,
+            currency:       req.body.request.currency,
+            max_percent:    req.body.request.max_percent
+        }
     };
 
     r.table(tableName)
@@ -149,6 +166,17 @@ router.post('/', auth.user(), async (req, res) => {
 *               type: string
 *             description:
 *               type: string
+*             photo:
+*               type: array
+*             request:
+*               type: object
+*               properties:
+*                 amount:
+*                   type: float
+*                 currency:
+*                   type: string
+*                 max_percent:
+*                   type: float
 *     responses:
 *       200:
 *         description: Ok
@@ -161,8 +189,14 @@ router.put('/:id', auth.user(), async (req, res) => {
     r.table(tableName)
         .get(projectId)
         .update({
-            name:           req.body.name,
-            description:    req.body.description
+            name:               req.body.name,
+            description:        req.body.description,
+            photo:              req.body.photo,
+            request:            {
+                amount:         req.body.request.amount,
+                currency:       req.body.request.currency,
+                max_percent:    req.body.request.max_percent
+            }
         })
         .run(req._rdb)
         .then(cursor => cursor.toArray())

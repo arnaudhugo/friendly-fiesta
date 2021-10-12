@@ -26,7 +26,7 @@ const swaggerDefinition = {
         version: '1.0',
         description: '',
     },
-    host: 'http://project.localhost/',
+    host: 'http://project.localhost',
     schemes: ['http'],
     basePath: '/api/v1',
     securityDefinitions: {
@@ -53,7 +53,6 @@ app.use(cors());
 app.use(i18n.init);
 
 app.use(connect.connect);
-// app.use(connect.setup);
 
 const router = express.Router();
 
