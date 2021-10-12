@@ -70,6 +70,7 @@ router.get('/:id', auth.user(), async (req, res) => {
     r.table(tableName)
         .filter({ userId: req.userId, id: id })
         .run(req._rdb)
+        .then(cursor => cursor.toArray())
         .then(result => {
             console.log(result)
             let advancement = {
