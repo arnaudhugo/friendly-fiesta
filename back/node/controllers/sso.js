@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
 
 /**
 * @swagger
-* /sso/:uuid:
+* /sso/:
 *   get:
 *     tags:
 *       - SSO
@@ -72,7 +72,7 @@ router.get('/', async (req, res) => {
 *         in: query
 *         schema:
 *           type: string
-*           required: true
+*         required: true
 *     responses:
 *       200:
 *         description: Ok
