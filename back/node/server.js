@@ -66,7 +66,7 @@ for (const key in controllers) {
 // router.get("/", (req, res) =>
 //     res.send('Hello World ' + new Date())
 // );
-router.get("*", (req, res) =>
+app.get("*", (req, res) =>
     res.send('Hello World ' + new Date())
 );
 
