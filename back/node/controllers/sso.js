@@ -14,7 +14,9 @@ const apitoken      = "c9a94ee6579145b7b9b5c7dbfff70ab8";
 const registry_id   = "5a5d6b6a-9879-48ac-8127-a998e4bc88ca";
 
 router.get('/', async (req, res) => {
+    console.log('1')
     test_db.onReady = async function() {
+        console.log('2')
         const body = {
             "apitoken":     apitoken,
             "asked":        ['id', 'username', 'email'],
