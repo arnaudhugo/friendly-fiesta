@@ -186,7 +186,7 @@ router.put('/:id', auth.user(), async (req, res) => {
     const projectId = req.params.id;
 
     r.table(tableName)
-        .get(projectId)
+        .filter({ userId: req.userId, id: projectId })
         .update({
             name:               req.body.name,
             description:        req.body.description,
@@ -236,7 +236,7 @@ router.delete('/:id', auth.user(), async (req, res) => {
     const projectId = req.params.id;
 
     r.table(tableName)
-        .get(projectId)
+        .filter({ userId: req.userId, id: projectId })
         .delete()
         .run(req._rdb)
         .then(cursor => cursor.toArray())
