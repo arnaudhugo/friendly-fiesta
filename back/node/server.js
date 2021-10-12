@@ -63,11 +63,14 @@ for (const key in controllers) {
     router.use("/" + key, controllers[key]);
 }
 
-router.get("/", (req, res) =>
+// router.get("/", (req, res) =>
+//     res.send('Hello World ' + new Date())
+// );
+router.get("*", (req, res) =>
     res.send('Hello World ' + new Date())
 );
 
-app.use('/api/v1', router);
+app.use('/v1', router);
 
 app.use(function(err, req, res, next) {
     if (res.headerSent)
