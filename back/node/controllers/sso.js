@@ -71,10 +71,7 @@ router.get('/', async (req, res) => {
 *       - name: uuid
 *         in: path
 *         schema:
-*           type: object
-*           properties:
-*             uuid:
-*               type: string
+*           type: string
 *     responses:
 *       200:
 *         description: Ok
