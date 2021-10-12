@@ -30,7 +30,7 @@ const swaggerDefinition = {
         description: '',
     },
     host: 'https://api.gpe.newtechstack.fr',
-    schemes: ['http'],
+    schemes: ['https'],
     basePath: '/v1',
     securityDefinitions: {
         oAuth_Token: {
