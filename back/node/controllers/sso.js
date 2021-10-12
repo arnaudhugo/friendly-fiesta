@@ -69,7 +69,7 @@ router.get('/', async (req, res) => {
 *       - application/json
 *     parameters:
 *       - name: uuid
-*         in: query
+*         in: path
 *         schema:
 *           type: object
 *           properties:
