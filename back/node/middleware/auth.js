@@ -12,12 +12,13 @@ function user() {
                 if (err) {
                     res.status(400).json({ code: 400, data: null, message: i18n.__('400oauth')})
                 }
+                console.log(user)
                 req.usrtoken = req.headers.usrtoken;
                 next();
             });
         }
         else
-            res.status(403).json({ code: 400, data: null, message: i18n.__('404oauth')})
+            res.status(404).json({ code: 404, data: null, message: i18n.__('404oauth')})
     }
 }
 
