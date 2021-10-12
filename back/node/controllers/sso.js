@@ -15,14 +15,14 @@ const registry_id   = "5a5d6b6a-9879-48ac-8127-a998e4bc88ca";
 
 router.get('/', async (req, res) => {
     console.log('1')
-    test_db.onReady = async function() {
+    test_db.onReady = await function() {
         console.log('2')
         const body = {
             "apitoken":     apitoken,
             "asked":        ['id', 'username', 'email'],
             "valid_until":  180
         }
-        
+    }
         let response = await fetch(
             `${sso_back}/extern/key`, 
             {
@@ -51,7 +51,7 @@ router.get('/', async (req, res) => {
         console.log(response, ret)
     
         res.status(200).json({ code: 200, data: ret, message: "" });
-    }
+    // }
 });
 
 router.get('/:uuid', async (req, res) => {
