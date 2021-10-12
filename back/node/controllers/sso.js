@@ -46,14 +46,12 @@ router.get('/', async (req, res) => {
 router.get('/:uuid', async (req, res) => {
     const uuid = req.params.uuid;
 
-    console.log(uuid)
-
-    test_db.getInfo(uuid, function(err, key, value) {
+    test_db.getInfo(uuid, async function(err, key, value) {
         if (err) {
             console.log(err);
             res.status(500).json({ code: 500, data: null, message: err });
         }
-        
+
         const body = {
             "apitoken":     apitoken,
             "secret":       value.secret
