@@ -29,13 +29,13 @@ const swaggerDefinition = {
         version: '1.0',
         description: '',
     },
-    host: 'http://project.localhost/',
+    host: 'https://api.gpe.newtechstack.fr',
     schemes: ['http'],
-    basePath: '/api/v1',
+    basePath: '/v1',
     securityDefinitions: {
         oAuth_Token: {
             type: 'apiKey',
-            name: 'oauth_token',
+            name: 'usrtoken',
             in: 'header'
         }
     }
