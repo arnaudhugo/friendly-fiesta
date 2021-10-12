@@ -26,7 +26,7 @@ const tableName = "project";
 */
 router.get('/', auth.user(), async (req, res) => {
     r.table(tableName)
-        .orderBy(r.desc('id'))
+        .filter({ userId: req.userId })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
@@ -61,10 +61,10 @@ router.get('/', auth.user(), async (req, res) => {
 *         description: 'Bad request : something went wrong.'
 */
 router.get('/:id', auth.user(), async (req, res) => {
-    const userId = req.usrtoken;
+    const id = res.params.id;
 
     r.table(tableName)
-        .filter({ userId: userId })
+        .filter({ userId: req.userId, id: id })
         .run(req._rdb)
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
@@ -117,7 +117,7 @@ router.get('/:id', auth.user(), async (req, res) => {
 */
 router.post('/', auth.user(), async (req, res) => {
     let project = {
-        userId:             req.usrtoken,
+        userId:             req.userId,
         name:               req.body.name,
         description:        req.body.description,
         photo:              req.body.photo,
