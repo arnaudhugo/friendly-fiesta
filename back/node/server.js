@@ -33,7 +33,7 @@ const swaggerDefinition = {
     schemes: ['https'],
     basePath: '/v1',
     securityDefinitions: {
-        oAuth_Token: {
+        usrtoken: {
             type: 'apiKey',
             name: 'usrtoken',
             in: 'header'
