@@ -98,7 +98,7 @@ router.get('/:id', auth.user(), async (req, res) => {
 *             description:
 *               type: string
 *             photo:
-*               type: array
+*               type: image_base64
 *             request:
 *               type: object
 *               properties:
@@ -116,7 +116,6 @@ router.get('/:id', auth.user(), async (req, res) => {
 *         description: 'Bad request : something went wrong.'
 */
 router.post('/', auth.user(), async (req, res) => {
-    console.log(req)
     let project = {
         userId:             req.userId,
         name:               req.body.name,
@@ -167,7 +166,7 @@ router.post('/', auth.user(), async (req, res) => {
 *             description:
 *               type: string
 *             photo:
-*               type: array
+*               type: image_base64
 *             request:
 *               type: object
 *               properties:
