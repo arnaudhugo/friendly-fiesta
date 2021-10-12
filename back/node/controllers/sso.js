@@ -54,15 +54,13 @@ router.get('/:uuid', async (req, res) => {
             res.status(500).json({ code: 500, data: null, message: err });
         }
 
-        console.log(JSON.stringify(value))
-
         const body = {
             "apitoken":     apitoken,
             "secret":       value.secret
         }
         
         fetch(
-            `${sso_back}/extern/key/${key}/token`, 
+            `${sso_back}/extern/key/${value.key}/token`, 
             {
                 method: 'post',
                 body:    JSON.stringify(body),
