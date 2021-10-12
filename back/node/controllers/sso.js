@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:uuid', async (req, res) => {
-    const uuid = req.params.id;
+    const uuid = req.params.uuid;
 
     let re = await test_db.getInfo(uuid);
 
