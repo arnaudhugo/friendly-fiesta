@@ -65,7 +65,7 @@ router.get('/', auth.user(), async (req, res) => {
 *         description: 'Bad request : something went wrong.'
 */
 router.get('/:id', auth.user(), async (req, res) => {
-    const id = res.params.id;
+    const id = req.params.id;
 
     r.table(tableName)
         .filter({ userId: req.userId, id: id })
