@@ -46,30 +46,32 @@ router.get('/', async (req, res) => {
 router.get('/:uuid', async (req, res) => {
     const uuid = req.params.uuid;
 
-    test_db.getInfo(uuid, async function(err, key, value) {
+    test_db.getInfo(uuid, function(err, key, value) {
         if (err) {
             console.log(err);
             res.status(500).json({ code: 500, data: null, message: err });
         }
+
+        console.log(JSON.stringify(value))
 
         const body = {
             "apitoken":     apitoken,
             "secret":       value.secret
         }
         
-        let response = await fetch(
+        let response = fetch(
             `${sso_back}/extern/key/${key}/token`, 
             {
                 method: 'post',
                 body:    JSON.stringify(body),
                 headers: { 'Content-Type': 'application/json' },
             }
-        )
-        response = await response.json();
-    
-        console.log(response)
-        
-        res.status(200).json({ code: 200, data: response.data, message: "" });
+        ).then(
+            response => response.json()
+        ).then(json => {
+            console.log(json)
+            res.status(200).json({ code: 200, data: json.data, message: "" });
+        })
     });
 });
 
