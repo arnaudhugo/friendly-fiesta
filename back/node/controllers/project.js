@@ -198,7 +198,6 @@ router.put('/:id', auth.user(), async (req, res) => {
             }
         })
         .run(req._rdb)
-        .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
             console.log(error);
@@ -239,7 +238,6 @@ router.delete('/:id', auth.user(), async (req, res) => {
         .filter({ userId: req.userId, id: projectId })
         .delete()
         .run(req._rdb)
-        .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
             console.log(error);

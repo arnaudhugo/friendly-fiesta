@@ -34,7 +34,7 @@ router.get('/', async (req, res) => {
     }
 
     let response = await fetch(
-        `${sso_back}/extern/key`, 
+        `${config.sso_back}/extern/key`, 
         {
             method: 'post',
             body:    JSON.stringify(body),
