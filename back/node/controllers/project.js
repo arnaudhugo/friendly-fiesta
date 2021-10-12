@@ -116,6 +116,7 @@ router.get('/:id', auth.user(), async (req, res) => {
 *         description: 'Bad request : something went wrong.'
 */
 router.post('/', auth.user(), async (req, res) => {
+    console.log(req)
     let project = {
         userId:             req.userId,
         name:               req.body.name,
