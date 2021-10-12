@@ -72,7 +72,6 @@ router.get('/:id', auth.user(), async (req, res) => {
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
-            console.log(result)
             let advancement = {
                 "percent": "30",
                 "start_date": "timestamp",
@@ -97,7 +96,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     ]
                 }
             }
-            // result.advancement = advancement;
+            result.advancement = advancement;
             res.status(200).json({ code: 200, data: result, message: "" })
         }).catch(error => {
             console.log(error);
