@@ -34,6 +34,8 @@ router.get('/', async (req, res) => {
     let uuid = new TokenGenerator().generate();
 
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
+
+    console.log(response.data.secret)
     
     let ret = {
         id: uuid,
@@ -59,7 +61,7 @@ router.get('/:uuid', async (req, res) => {
             "secret":       value.secret
         }
         
-        let response = fetch(
+        fetch(
             `${sso_back}/extern/key/${key}/token`, 
             {
                 method: 'post',
