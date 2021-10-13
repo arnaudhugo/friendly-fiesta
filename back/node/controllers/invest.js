@@ -132,6 +132,7 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
     r.table(tableName)
         .filter({ id: investId })
         .run(req._rdb)
+        .then(cursor => cursor.toArray())
         .then(result => {
             console.log(result)
             r.table('project')
