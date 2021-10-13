@@ -12,6 +12,7 @@ function user() {
                 if (err) {
                     res.status(400).json({ code: 400, data: null, message: i18n.__('400oauth')})
                 }
+                console.log(`User verify, ${user}`)
                 req.userId = user.payload.id;
                 req.username = user.payload.username;
                 req.email = user.payload.email;
