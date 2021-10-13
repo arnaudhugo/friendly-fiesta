@@ -34,12 +34,13 @@ router.get('/all', async (req, res) => {
                 .then(cursor => cursor.toArray())
                 .then(invests => {
                     for (let project of projects) {
-                        project.totalAmount = 0;
+                        let totalInvested = 0;
                         for (const invest of invests) {
                             if (invest.projectId == project.id) {
-                                project.totalAmount += (invest.amount ? parseFloat(invest.amount) : 0);
+                                totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
                             }
                         }
+                        project.percent = ((totalInvested / parseFloat(project.request.amount)) * 100).toFixed(2);
                     }
                     
                     res.status(200).json({ code: 200, data: projects, message: "" })
@@ -51,8 +52,6 @@ router.get('/all', async (req, res) => {
                         res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
                     }
                 });
-
-            // res.status(200).json({ code: 200, data: projects, message: "" })
         }).catch(error => {
             console.log(error);
             if (error) {
@@ -61,45 +60,6 @@ router.get('/all', async (req, res) => {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
-
-
-
-    // r.table(tableName)
-    //     .run(req._rdb)
-    //     .then(cursor => cursor.toArray())
-    //     .then(projects => {
-    //         r.table('invest')
-    //             .filter({ projectId: id })
-    //             .run(req._rdb)
-    //             .then(cursor => cursor.toArray())
-    //             .then(invests => {
-    //                 let totalAmount = 0;
-    //                 for (const invest of invests) {
-    //                     if (invest.validated == true) {
-    //                         totalAmount += parseFloat(invest.amount);
-    //                     }
-    //                 }
-
-    //                 result[0].totalAmount = totalAmount;
-    //                 res.status(200).json({ code: 200, data: result, message: "" })
-    //             }).catch(error => {
-    //                 console.log(error);
-    //                 if (error) {
-    //                     res.status(500).json({ code: 500, data: null, message: error });
-    //                 } else {
-    //                     res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-    //                 }
-    //             });
-    //         console.log(projects)
-    //         res.status(200).json({ code: 200, data: projects, message: "" })
-    //     }).catch(error => {
-    //         console.log(error);
-    //         if (error) {
-    //             res.status(500).json({ code: 500, data: null, message: error });
-    //         } else {
-    //             res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-    //         }
-    //     });
 });
 
 /**
