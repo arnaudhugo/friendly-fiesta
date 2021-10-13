@@ -83,7 +83,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     let totalAmount = 0;
                     for (const invest of invests) {
                         if (invest.validated == true) {
-                            list.append({
+                            list.push({
                                 usr_id:     invest.userId,
                                 percent:    invest.percent_proposal,
                                 amount:     invest.amount
