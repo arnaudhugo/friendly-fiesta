@@ -58,7 +58,6 @@ router.get('/all', async (req, res) => {
 *         description: 'Bad request : something went wrong.'
 */
 router.get('/', auth.user(), async (req, res) => {
-    console.log('teeee')
     r.table(tableName)
         .filter({ userId: req.userId })
         .run(req._rdb)
@@ -98,14 +97,12 @@ router.get('/', auth.user(), async (req, res) => {
 */
 router.get('/:id', auth.user(), async (req, res) => {
     const id = req.params.id;
-    console.log('teeee')
 
     r.table(tableName)
         .filter({ userId: req.userId, id: id })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
-            console.log(result)
             r.table('invest')
                 .filter({ projectId: id })
                 .eqJoin('userId', r.table('user')).zip()
