@@ -182,7 +182,9 @@ router.post('/', auth.user(), async (req, res) => {
             currency:       req.body.request.currency,
             max_percent:    req.body.request.max_percent,
             months:         req.body.request.months
-        }
+        },
+        start_date:         new Date().getTime(),
+        end_date:           new Date().setMonth(new Date().getMonth() + req.body.request.months)
     };
 
     r.table(tableName)
@@ -237,7 +239,6 @@ router.post('/', auth.user(), async (req, res) => {
 *                   type: float
 *                 months:
 *                   type: integer
-*         required: true
 *     responses:
 *       200:
 *         description: Ok
@@ -260,7 +261,7 @@ router.put('/:id', auth.user(), async (req, res) => {
                 months:         req.body.request.months
             },
             start_date:         new Date().getTime(),
-            end_date:           new Date().setMonth(new Date().getMonth() + req.body.request.months),
+            end_date:           new Date().setMonth(new Date().getMonth() + req.body.request.months)
         })
         .run(req._rdb)
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
