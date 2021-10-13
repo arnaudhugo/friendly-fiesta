@@ -37,7 +37,7 @@ router.get('/', auth.user(), async (req, res) => {
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
             } else {
-                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
 });
@@ -98,7 +98,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     }
 
                     result[0].advancement = {
-                        "percent": (totalAmount / parseFloat(result[0].request.amount)) * 100,
+                        "percent": ((totalAmount / parseFloat(result[0].request.amount)) * 100).toFixed(2),
                         "start_date": "timestamp",
                         "end_date": "timestamp",
                         "investors": {
@@ -116,7 +116,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     if (error) {
                         res.status(500).json({ code: 500, data: null, message: error.msg });
                     } else {
-                        res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
                     }
                 });
         }).catch(error => {
@@ -124,7 +124,7 @@ router.get('/:id', auth.user(), async (req, res) => {
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
             } else {
-                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
 });
@@ -194,7 +194,7 @@ router.post('/', auth.user(), async (req, res) => {
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
             } else {
-                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
 });
@@ -235,6 +235,8 @@ router.post('/', auth.user(), async (req, res) => {
 *                   type: string
 *                 max_percent:
 *                   type: float
+*                 months:
+*                   type: integer
 *     responses:
 *       200:
 *         description: Ok
@@ -253,7 +255,8 @@ router.put('/:id', auth.user(), async (req, res) => {
             request:            {
                 amount:         req.body.request.amount,
                 currency:       req.body.request.currency,
-                max_percent:    req.body.request.max_percent
+                max_percent:    req.body.request.max_percent,
+                months:         req.body.request.months
             }
         })
         .run(req._rdb)
@@ -263,7 +266,7 @@ router.put('/:id', auth.user(), async (req, res) => {
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
             } else {
-                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
 });
@@ -305,7 +308,7 @@ router.delete('/:id', auth.user(), async (req, res) => {
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
             } else {
-                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
         });
 });

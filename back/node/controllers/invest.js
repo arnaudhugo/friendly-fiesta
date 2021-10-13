@@ -103,4 +103,109 @@ router.post('/:id', auth.user(), async (req, res) => {
         });
 });
 
+/**
+* @swagger
+* /invest/valid/{id}:
+*   post:
+*     security:
+*       - usrtoken: []
+*     tags:
+*       - Invest
+*     name: Valid an invest to an project
+*     summary: Valid an invest to an project
+*     consumes:
+*       - application/json
+*     parameters:
+*       - name: id
+*         in: path
+*         schema:
+*           type: string
+*         required: true
+*         required: true
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
+router.post('/:id', auth.user(), async (req, res) => {
+    const investId = req.params.id;
+
+    r.table(tableName)
+        .filter({ id: investId })
+        .run(req._rdb)
+        .then(result => {
+            r.table('project')
+                .filter({ id: result[0].projectId })
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(project => {
+                    if (project[0].userId == req.userId) {
+                        r.table(tableName)
+                            .filter({ id: investId, projectId: projectId })
+                            .update({
+                                validated:   true
+                            })
+                            .run(req._rdb)
+                            .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
+                            .catch(error => {
+                                console.log(error);
+                                if (error) {
+                                    res.status(500).json({ code: 500, data: null, message: error.msg });
+                                } else {
+                                    res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                                }
+                            });
+                        res.status(200).json({ code: 200, data: result, message: "" })
+                    }
+                    else {
+                        res.status(403).json({ code: 200, data: result, message: i18n.__('403') })
+                    }
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error.msg });
+                    } else {
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                    }
+                });
+        }).catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error.msg });
+            } else {
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+            }
+        });
+    
+
+
+
+    const projectId = req.params.id;
+
+    let project = {
+        userId:             req.userId,
+        projectId:          projectId,
+        amount:             req.body.amount,
+        percent_proposal:   req.body.percent_proposal,
+        start_date:         new Date().getTime(),
+        end_date:           new Date().setMonth(new Date().getMonth() + 1),
+        validated:          false
+    };
+
+    r.table(tableName)
+        .insert(project)
+        .run(req._rdb)
+        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
+        .catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error.msg });
+            } else {
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+            }
+        });
+});
+
+
 module.exports = router;
