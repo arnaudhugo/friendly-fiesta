@@ -40,7 +40,7 @@ router.get('/', auth.user(), async (req, res) => {
                 result.right.projectId = result.right.id;
                 delete result.right.id;
 
-                data = {...result.left, ...result.right}
+                data.push({...result.left, ...result.right});
             }
 
             r.table('invest')
