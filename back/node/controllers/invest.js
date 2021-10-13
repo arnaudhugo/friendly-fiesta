@@ -147,7 +147,7 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
                                 validated:   true
                             })
                             .run(req._rdb)
-                            .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
+                            .then(resultUp => res.status(200).json({ code: 200, data: resultUp, message: "" }))
                             .catch(error => {
                                 console.log(error);
                                 if (error) {
@@ -156,7 +156,6 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
                                     res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
                                 }
                             });
-                        res.status(200).json({ code: 200, data: result, message: "" })
                     }
                     else {
                         res.status(403).json({ code: 403, data: null, message: i18n.__('403') })
