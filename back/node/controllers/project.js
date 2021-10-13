@@ -26,10 +26,9 @@ const tableName = "project";
 */
 router.get('/all', async (req, res) => {
     r.table(tableName)
-        .eqJoin('projectId', r.table('invest')).without({right: "id"}).zip()
         .run(req._rdb)
         .then(cursor => cursor.toArray())
-        .then(result => {
+        .then(projects => {
             // r.table('invest')
             //     .filter({ projectId: id })
             //     .run(req._rdb)
@@ -52,6 +51,10 @@ router.get('/all', async (req, res) => {
             //             res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             //         }
             //     });
+            for (const project of projects) {
+                let t = await r.table('invest').filter({ projectId: id }).run(req._rdb).toArray()
+                console.log(t)
+            }
             console.log(result)
             res.status(200).json({ code: 200, data: result, message: "" })
         }).catch(error => {
