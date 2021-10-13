@@ -79,17 +79,18 @@ router.get('/', auth.user(), async (req, res) => {
 router.post('/:id', auth.user(), async (req, res) => {
     const projectId = req.params.id;
 
-    let project = {
+    let invest = {
         userId:             req.userId,
         projectId:          projectId,
         amount:             req.body.amount,
         percent_proposal:   req.body.percent_proposal,
         validated:          false,
-        docGen:             false
+        docGen:             false,
+        docUrl:             null
     };
 
     r.table(tableName)
-        .insert(project)
+        .insert(invest)
         .run(req._rdb)
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
