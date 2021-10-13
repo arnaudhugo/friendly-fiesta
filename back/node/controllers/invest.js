@@ -129,12 +129,14 @@ router.post('/:id', auth.user(), async (req, res) => {
 */
 router.post('/choose/:id', auth.user(), async (req, res) => {
     const investId = req.params.id;
+    console.log(investId)
 
     r.table(tableName)
         .filter({ id: investId })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
+            console.log(result)
             r.table('project')
                 .filter({ id: result[0].projectId })
                 .run(req._rdb)
