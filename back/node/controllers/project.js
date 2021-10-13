@@ -25,47 +25,11 @@ const tableName = "project";
 *         description: 'Bad request : something went wrong.'
 */
 router.get('/all', async (req, res) => {
-    r.table(tableName)
-        .eqJoin('projectId', r.table('project')).zip()
-        .group('projectId')
-        .then(cursor => cursor.toArray())
-        .then(projects => {
-            res.status(200).json({ code: 200, data: projects, message: "" })
-        }).catch(error => {
-            console.log(error);
-            if (error) {
-                res.status(500).json({ code: 500, data: null, message: error });
-            } else {
-                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-            }
-        });
     // r.table(tableName)
-    //     .run(req._rdb)
+    //     .eqJoin('projectId', r.table('project')).zip()
+    //     .group('projectId')
     //     .then(cursor => cursor.toArray())
     //     .then(projects => {
-    //         r.table('invest')
-    //             .filter({ projectId: id })
-    //             .run(req._rdb)
-    //             .then(cursor => cursor.toArray())
-    //             .then(invests => {
-    //                 let totalAmount = 0;
-    //                 for (const invest of invests) {
-    //                     if (invest.validated == true) {
-    //                         totalAmount += parseFloat(invest.amount);
-    //                     }
-    //                 }
-
-    //                 result[0].totalAmount = totalAmount;
-    //                 res.status(200).json({ code: 200, data: result, message: "" })
-    //             }).catch(error => {
-    //                 console.log(error);
-    //                 if (error) {
-    //                     res.status(500).json({ code: 500, data: null, message: error });
-    //                 } else {
-    //                     res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-    //                 }
-    //             });
-    //         console.log(projects)
     //         res.status(200).json({ code: 200, data: projects, message: "" })
     //     }).catch(error => {
     //         console.log(error);
@@ -75,6 +39,42 @@ router.get('/all', async (req, res) => {
     //             res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
     //         }
     //     });
+    r.table(tableName)
+        .run(req._rdb)
+        .then(cursor => cursor.toArray())
+        .then(projects => {
+            r.table('invest')
+                .filter({ projectId: id })
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(invests => {
+                    let totalAmount = 0;
+                    for (const invest of invests) {
+                        if (invest.validated == true) {
+                            totalAmount += parseFloat(invest.amount);
+                        }
+                    }
+
+                    result[0].totalAmount = totalAmount;
+                    res.status(200).json({ code: 200, data: result, message: "" })
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error });
+                    } else {
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                    }
+                });
+            console.log(projects)
+            res.status(200).json({ code: 200, data: projects, message: "" })
+        }).catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error });
+            } else {
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+            }
+        });
 });
 
 /**
