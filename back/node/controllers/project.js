@@ -52,8 +52,29 @@ router.get('/all', async (req, res) => {
             //         }
             //     });
             for (const project of projects) {
-                let t = await r.table('invest').filter({ projectId: id }).run(req._rdb).toArray()
-                console.log(t)
+                console.log(project)
+                r.table('invest')
+                    .filter({ projectId: project.id })
+                    .run(req._rdb)
+                    .then(cursor => cursor.toArray())
+                    .then(invests => {
+                        let totalAmount = 0;
+                        for (const invest of invests) {
+                            if (invest.validated == true) {
+                                totalAmount += parseFloat(invest.amount);
+                            }
+                        }
+    
+                        // result[0].totalAmount = totalAmount;
+                        // res.status(200).json({ code: 200, data: result, message: "" })
+                    }).catch(error => {
+                        console.log(error);
+                        if (error) {
+                            res.status(500).json({ code: 500, data: null, message: error });
+                        } else {
+                            res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                        }
+                    });
             }
             console.log(result)
             res.status(200).json({ code: 200, data: result, message: "" })
