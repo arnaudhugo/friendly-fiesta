@@ -142,7 +142,7 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
                 .then(project => {
                     if (project[0].userId == req.userId) {
                         r.table(tableName)
-                            .filter({ id: investId, projectId: projectId })
+                            .filter({ id: investId, projectId: result[0].projectId })
                             .update({
                                 validated:   true
                             })
@@ -159,7 +159,7 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
                         res.status(200).json({ code: 200, data: result, message: "" })
                     }
                     else {
-                        res.status(403).json({ code: 200, data: result, message: i18n.__('403') })
+                        res.status(403).json({ code: 403, data: null, message: i18n.__('403') })
                     }
                 }).catch(error => {
                     console.log(error);
