@@ -16,6 +16,14 @@ function user() {
                 req.userId = user.payload.id;
                 req.username = user.payload.username;
                 req.email = user.payload.email;
+
+                r.table('user')
+                    .insert({
+                        id: req.userId,
+                        username: req.username,
+                        email: req.email
+                    })
+                    .run(req._rdb)
                 next();
             });
         }
