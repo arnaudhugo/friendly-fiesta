@@ -29,10 +29,21 @@ const tableName = "invest";
 router.get('/', auth.user(), async (req, res) => {
     r.table(tableName)
         .filter({ userId: req.userId })
+        .eqJoin('projectId', r.table('project'))
         .run(req._rdb)
         .then(cursor => cursor.toArray())
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
+        .then(results => {
+            let data = [];
+            for (const result of results) {
+                result.left.investId = result.left.id;
+                delete result.left.id;
+                result.right.projectId = result.right.id;
+                delete result.right.id;
+                data.push({...result.left, ...result.right});
+            }
+            console.log(data)
+            res.status(200).json({ code: 200, data: data, message: "" })
+        }).catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error });
