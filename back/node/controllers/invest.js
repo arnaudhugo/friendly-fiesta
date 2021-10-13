@@ -84,8 +84,6 @@ router.post('/:id', auth.user(), async (req, res) => {
         projectId:          projectId,
         amount:             req.body.amount,
         percent_proposal:   req.body.percent_proposal,
-        start_date:         new Date().getTime(),
-        end_date:           new Date().setMonth(new Date().getMonth() + 1),
         validated:          false
     };
 
@@ -128,7 +126,7 @@ router.post('/:id', auth.user(), async (req, res) => {
 *       500:
 *         description: 'Bad request : something went wrong.'
 */
-router.post('/:id', auth.user(), async (req, res) => {
+router.post('/valid/:id', auth.user(), async (req, res) => {
     const investId = req.params.id;
 
     r.table(tableName)
@@ -170,34 +168,6 @@ router.post('/:id', auth.user(), async (req, res) => {
                     }
                 });
         }).catch(error => {
-            console.log(error);
-            if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
-            } else {
-                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-            }
-        });
-    
-
-
-
-    const projectId = req.params.id;
-
-    let project = {
-        userId:             req.userId,
-        projectId:          projectId,
-        amount:             req.body.amount,
-        percent_proposal:   req.body.percent_proposal,
-        start_date:         new Date().getTime(),
-        end_date:           new Date().setMonth(new Date().getMonth() + 1),
-        validated:          false
-    };
-
-    r.table(tableName)
-        .insert(project)
-        .run(req._rdb)
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error.msg });
