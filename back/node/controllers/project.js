@@ -39,7 +39,7 @@ router.get('/all', async (req, res) => {
     //             res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
     //         }
     //     });
-    let t = await r.table(tableName).run()
+    let t = await r.table(tableName).run(req._rdb)
 
     console.log(t);
     res.status(200).json({ code: 200, data: t, message: "" })
