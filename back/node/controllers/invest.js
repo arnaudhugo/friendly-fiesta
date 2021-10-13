@@ -61,7 +61,7 @@ router.get('/', auth.user(), async (req, res) => {
                                 totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
                             }
                         }
-                        result.percent = ((totalInvested / parseFloat(project.request.amount)) * 100).toFixed(2);
+                        result.percent = ((totalInvested / parseFloat(result.request.amount)) * 100).toFixed(2);
                     }
                     
                     res.status(200).json({ code: 200, data: results, message: "" })
