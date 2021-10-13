@@ -34,9 +34,10 @@ router.get('/all', async (req, res) => {
                 .then(cursor => cursor.toArray())
                 .then(invests => {
                     for (let project of projects) {
+                        project.totalAmount = 0;
                         for (const invest of invests) {
                             if (invest.projectId == project.id) {
-                                project.totalAmount += parseFloat(invest.amount || 0);
+                                project.totalAmount += (invest.amount ? parseFloat(invest.amount) : 0);
                             }
                         }
                     }
