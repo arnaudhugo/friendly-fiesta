@@ -127,7 +127,8 @@ router.get('/:id', auth.user(), async (req, res) => {
                             username:   invest.username,
                             percent:    invest.percent_proposal,
                             amount:     invest.amount,
-                            validated:  invest.validated
+                            validated:  invest.validated,
+                            docGen:     invest.docGen
                         })
                     }
 
