@@ -294,7 +294,7 @@ router.put('/:id', auth.user(), async (req, res) => {
                 months:         req.body.request.months
             },
             start_date:         new Date().getTime(),
-            end_date:           new Date().setMonth(new Date().getMonth() + req.body.request.months)
+            end_date:           new Date().setMonth(new Date().getMonth() + 1)
         })
         .run(req._rdb)
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
