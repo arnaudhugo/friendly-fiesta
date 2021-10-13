@@ -16,8 +16,8 @@ function user() {
                 console.log(`User verify, ${JSON.stringify(user)}`)
                 req.userId = user.payload.id;
                 req.username = user.payload.username;
-                req.lastname = user.payload.lastname;
-                req.firstname = user.payload.firstname;
+                req.lastname = user.payload.last_name;
+                req.firstname = user.payload.first_name;
                 req.email = user.payload.email;
 
                 r.table('user')
