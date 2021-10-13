@@ -28,8 +28,30 @@ router.get('/all', async (req, res) => {
     r.table(tableName)
         .run(req._rdb)
         .then(cursor => cursor.toArray())
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
+        .then(result => {
+            r.table('invest')
+                .filter({ projectId: id })
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(invests => {
+                    let totalAmount = 0;
+                    for (const invest of invests) {
+                        if (invest.validated == true) {
+                            totalAmount += parseFloat(invest.amount);
+                        }
+                    }
+
+                    result[0].totalAmount = totalAmount;
+                    res.status(200).json({ code: 200, data: result, message: "" })
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error });
+                    } else {
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                    }
+                });
+        }).catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error });
@@ -62,8 +84,9 @@ router.get('/', auth.user(), async (req, res) => {
         .filter({ userId: req.userId })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
+        .then(result => {
+            res.status(200).json({ code: 200, data: result, message: "" })
+        }).catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error });
