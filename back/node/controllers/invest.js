@@ -119,7 +119,6 @@ router.post('/:id', auth.user(), async (req, res) => {
 *         schema:
 *           type: string
 *         required: true
-*         required: true
 *     responses:
 *       200:
 *         description: Ok
