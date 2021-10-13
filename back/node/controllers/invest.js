@@ -180,6 +180,54 @@ router.post('/choose/:id', auth.user(), async (req, res) => {
 
 /**
 * @swagger
+* /invest/doc/{id}:
+*   get:
+*     security:
+*       - usrtoken: []
+*     tags:
+*       - Invest
+*     name: Get document
+*     summary: Get document
+*     consumes:
+*       - application/json
+*     parameters:
+*       - name: id
+*         in: path
+*         schema:
+*           type: string
+*         required: true
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
+router.post('/doc/:id', auth.user(), async (req, res) => {
+    const investId = req.params.id;
+
+    r.table(tableName)
+        .filter({ id: investId })
+        .run(req._rdb)
+        .then(cursor => cursor.toArray())
+        .then(result => {
+            if (result[0].userId == req.userId && result[0].validated == true && result[0].docGen == true) {
+                res.status(200).json({ code: 200, data: result[0].docUrl, message: "" })
+            }
+            else {
+                res.status(403).json({ code: 403, data: null, message: i18n.__('403') })
+            }
+        }).catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error });
+            } else {
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+            }
+        });
+});
+
+/**
+* @swagger
 * /invest/valid/{id}:
 *   post:
 *     security:
