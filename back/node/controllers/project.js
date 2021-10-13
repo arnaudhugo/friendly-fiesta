@@ -104,8 +104,8 @@ router.get('/:id', auth.user(), async (req, res) => {
         .then(cursor => cursor.toArray())
         .then(result => {
             r.table('invest')
-                .filter({ projectId: id })
                 .eq_join('id', r.table('user')).zip()
+                .filter({ projectId: id })
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
