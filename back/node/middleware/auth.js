@@ -1,5 +1,6 @@
 'use strict';
 
+const r         = require('rethinkdb');
 const config    = require('../config/config');
 const jwt       = require('jsonwebtoken');
 const fetch     = require('node-fetch');
