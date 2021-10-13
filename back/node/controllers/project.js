@@ -64,6 +64,7 @@ router.get('/all', async (req, res) => {
                                 totalAmount += parseFloat(invest.amount);
                             }
                         }
+                        console.log(totalAmount)
     
                         // result[0].totalAmount = totalAmount;
                         // res.status(200).json({ code: 200, data: result, message: "" })
