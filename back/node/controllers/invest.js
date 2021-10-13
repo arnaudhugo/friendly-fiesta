@@ -34,13 +34,14 @@ router.get('/', auth.user(), async (req, res) => {
         .then(cursor => cursor.toArray())
         .then(results => {
             // let data = [];
-            // for (const result of results) {
-            //     result.left.investId = result.left.id;
-            //     delete result.left.id;
-            //     result.right.projectId = result.right.id;
-            //     delete result.right.id;
-            //     data.push({...result.left, ...result.right});
-            // }
+            for (let result of results) {
+                result.left.investId = result.left.id;
+                delete result.left.id;
+                result.right.projectId = result.right.id;
+                delete result.right.id;
+
+                result = {...result.left, ...result.right}
+            }
 
             r.table('invest')
                 .run(req._rdb)
@@ -49,12 +50,7 @@ router.get('/', auth.user(), async (req, res) => {
                     for (let result of results) {
                         let totalInvested = 0;
 
-                        result.left.investId = result.left.id;
-                        delete result.left.id;
-                        result.right.projectId = result.right.id;
-                        delete result.right.id;
-
-                        result = {...result.left, ...result.right}
+                        
                         
                         for (const invest of invests) {
                             if (invest.projectId == result.projectId) {
