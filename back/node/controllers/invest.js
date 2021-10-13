@@ -202,7 +202,7 @@ router.post('/choose/:id', auth.user(), async (req, res) => {
 *       500:
 *         description: 'Bad request : something went wrong.'
 */
-router.post('/doc/:id', auth.user(), async (req, res) => {
+router.get('/doc/:id', auth.user(), async (req, res) => {
     const investId = req.params.id;
 
     r.table(tableName)
