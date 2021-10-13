@@ -145,7 +145,7 @@ router.get('/:id', auth.user(), async (req, res) => {
 *       500:
 *         description: 'Bad request : something went wrong.'
 */
-router.get('/all', auth.user(), async (req, res) => {
+router.get('/all', async (req, res) => {
     r.table(tableName)
         .run(req._rdb)
         .then(cursor => cursor.toArray())
