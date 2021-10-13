@@ -83,7 +83,8 @@ router.post('/:id', auth.user(), async (req, res) => {
         userId:             req.userId,
         projectId:          projectId,
         amount:             req.body.amount,
-        percent_proposal:   req.body.percent_proposal
+        percent_proposal:   req.body.percent_proposal,
+        validated:          false
     };
 
     r.table(tableName)
