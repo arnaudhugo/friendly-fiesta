@@ -76,15 +76,29 @@ router.get('/:id', auth.user(), async (req, res) => {
                 .filter({ projectId: id })
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
-                .then(invest => {
-                    console.log(invest)
+                .then(invests => {
+                    console.log(invests)
+
+                    let list = []
+                    let totalAmount = 0;
+                    for (const invest of invests) {
+                        if (invest.validated == true) {
+                            list.append({
+                                usr_id:     invest.userId,
+                                percent:    invest.percent_proposal,
+                                amount:     invest.amount
+                            })
+                            totalAmount += parseFloat(invest.amount);
+                        }
+                    }
+
                     result[0].advancement = {
                         "percent": "30",
                         "start_date": "timestamp",
                         "end_date": "timestamp",
                         "investors": {
                             "stats": {
-                                "number": 3,
+                                "number": list.length,
                                 "average_invest": 300.00,
                                 "lowest_percent": 1.20
                             },
