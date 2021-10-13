@@ -16,8 +16,8 @@ const tableName = "project";
 *       - usrtoken: []
 *     tags:
 *       - Project
-*     name: Get all project for an user
-*     summary: Return all project for an user
+*     name: Get all project
+*     summary: Return all project
 *     consumes:
 *       - application/json
 *     responses:
@@ -26,9 +26,8 @@ const tableName = "project";
 *       500:
 *         description: 'Bad request : something went wrong.'
 */
-router.get('/', auth.user(), async (req, res) => {
+router.get('/', async (req, res) => {
     r.table(tableName)
-        .filter({ userId: req.userId })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
