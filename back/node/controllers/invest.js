@@ -41,7 +41,6 @@ router.get('/', auth.user(), async (req, res) => {
                 delete result.right.id;
                 data.push({...result.left, ...result.right});
             }
-            console.log(data)
             res.status(200).json({ code: 200, data: data, message: "" })
         }).catch(error => {
             console.log(error);
