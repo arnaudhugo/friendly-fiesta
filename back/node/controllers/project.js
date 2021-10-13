@@ -151,7 +151,7 @@ router.get('/:id', auth.user(), async (req, res) => {
     const id = req.params.id;
 
     r.table(tableName)
-        .filter({ userId: req.userId, id: id })
+        .filter({ id: id })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
@@ -161,7 +161,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
-                    console.log(result)
+                    console.log(invests)
                     let list = []
                     let totalAmount = 0;
                     let totalValid = 0;
