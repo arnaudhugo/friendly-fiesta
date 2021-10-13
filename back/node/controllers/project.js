@@ -81,39 +81,33 @@ router.get('/:id', auth.user(), async (req, res) => {
 
                     let list = []
                     let totalAmount = 0;
+                    let lowestPercent = 0;
                     for (const invest of invests) {
                         if (invest.validated == true) {
-                            list.push({
-                                usr_id:     invest.userId,
-                                percent:    invest.percent_proposal,
-                                amount:     invest.amount
-                            })
                             totalAmount += parseFloat(invest.amount);
+                            if (parseFloat(invest.percent_proposal) < lowestPercent)
+                                lowestPercent = parseFloat(invest.percent_proposal)
                         }
+                        list.push({
+                            id:         invest.id,
+                            usr_id:     invest.userId,
+                            percent:    invest.percent_proposal,
+                            amount:     invest.amount,
+                            validated:  invest.validated
+                        })
                     }
 
                     result[0].advancement = {
-                        "percent": "30",
+                        "percent": (totalAmount / parseFloat(result.request.amount)) * 100,
                         "start_date": "timestamp",
                         "end_date": "timestamp",
                         "investors": {
                             "stats": {
                                 "number": list.length,
                                 "average_invest": 300.00,
-                                "lowest_percent": 1.20
+                                "lowest_percent": lowestPercent
                             },
-                            "list": [
-                                {
-                                    "usr_id": "iduser",
-                                    "percent": "1.28",
-                                    "amount": 400.00
-                                },
-                                {
-                                    "usr_id": "iduser",
-                                    "percent": "1.20",
-                                    "amount": 200.00
-                                }
-                            ]
+                            "list": list
                         }
                     }
                     res.status(200).json({ code: 200, data: result, message: "" })

@@ -84,6 +84,8 @@ router.post('/:id', auth.user(), async (req, res) => {
         projectId:          projectId,
         amount:             req.body.amount,
         percent_proposal:   req.body.percent_proposal,
+        start_date:         new Date().getTime(),
+        end_date:           new Date().setMonth(new Date().getMonth() + 1),
         validated:          false
     };
 
