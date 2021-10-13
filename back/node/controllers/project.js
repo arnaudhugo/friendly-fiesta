@@ -72,31 +72,45 @@ router.get('/:id', auth.user(), async (req, res) => {
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
-            result[0].advancement = {
-                "percent": "30",
-                "start_date": "timestamp",
-                "end_date": "timestamp",
-                "investors": {
-                    "stats": {
-                        "number": 3,
-                        "average_invest": 300.00,
-                        "lowest_percent": 1.20
-                    },
-                    "list": [
-                        {
-                            "usr_id": "iduser",
-                            "percent": "1.28",
-                            "amount": 400.00
-                        },
-                        {
-                            "usr_id": "iduser",
-                            "percent": "1.20",
-                            "amount": 200.00
+            r.table('invest')
+                .filter({ projectId: id })
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(invest => {
+                    console.log(invest)
+                    result[0].advancement = {
+                        "percent": "30",
+                        "start_date": "timestamp",
+                        "end_date": "timestamp",
+                        "investors": {
+                            "stats": {
+                                "number": 3,
+                                "average_invest": 300.00,
+                                "lowest_percent": 1.20
+                            },
+                            "list": [
+                                {
+                                    "usr_id": "iduser",
+                                    "percent": "1.28",
+                                    "amount": 400.00
+                                },
+                                {
+                                    "usr_id": "iduser",
+                                    "percent": "1.20",
+                                    "amount": 200.00
+                                }
+                            ]
                         }
-                    ]
-                }
-            }
-            res.status(200).json({ code: 200, data: result, message: "" })
+                    }
+                    res.status(200).json({ code: 200, data: result, message: "" })
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error.msg });
+                    } else {
+                        res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+                    }
+                });
         }).catch(error => {
             console.log(error);
             if (error) {

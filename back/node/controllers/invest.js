@@ -11,6 +11,40 @@ const tableName = "invest";
 /**
 * @swagger
 * /invest:
+*   get:
+*     security:
+*       - usrtoken: []
+*     tags:
+*       - Invest
+*     name: Get all project where user invest
+*     summary: Get all project where user invest
+*     consumes:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
+router.get('/', auth.user(), async (req, res) => {
+    r.table(tableName)
+        .filter({ userId: req.userId })
+        .run(req._rdb)
+        .then(cursor => cursor.toArray())
+        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
+        .catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error.msg });
+            } else {
+                res.status(500).json({ code: 500, data: result, message: i18n.__('500') });
+            }
+        });
+});
+
+/**
+* @swagger
+* /invest/{id}:
 *   post:
 *     security:
 *       - usrtoken: []
@@ -21,6 +55,11 @@ const tableName = "invest";
 *     consumes:
 *       - application/json
 *     parameters:
+*       - name: id
+*         in: path
+*         schema:
+*           type: string
+*         required: true
 *       - name: body
 *         in: body
 *         schema:
@@ -37,9 +76,12 @@ const tableName = "invest";
 *       500:
 *         description: 'Bad request : something went wrong.'
 */
-router.post('/', auth.user(), async (req, res) => {
+router.post('/:id', auth.user(), async (req, res) => {
+    const projectId = req.params.id;
+
     let project = {
         userId:             req.usrtoken,
+        projectId:          projectId,
         amount:             req.body.amount,
         percent_proposal:   req.body.percent_proposal
     };
@@ -47,7 +89,6 @@ router.post('/', auth.user(), async (req, res) => {
     r.table(tableName)
         .insert(project)
         .run(req._rdb)
-        .then(cursor => cursor.toArray())
         .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
         .catch(error => {
             console.log(error);
