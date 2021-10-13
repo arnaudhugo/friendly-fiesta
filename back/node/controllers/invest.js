@@ -33,15 +33,49 @@ router.get('/', auth.user(), async (req, res) => {
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(results => {
-            let data = [];
-            for (const result of results) {
-                result.left.investId = result.left.id;
-                delete result.left.id;
-                result.right.projectId = result.right.id;
-                delete result.right.id;
-                data.push({...result.left, ...result.right});
-            }
-            res.status(200).json({ code: 200, data: data, message: "" })
+            // let data = [];
+            // for (const result of results) {
+            //     result.left.investId = result.left.id;
+            //     delete result.left.id;
+            //     result.right.projectId = result.right.id;
+            //     delete result.right.id;
+            //     data.push({...result.left, ...result.right});
+            // }
+
+            r.table('invest')
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(invests => {
+                    for (let result of results) {
+                        let totalInvested = 0;
+
+                        result.left.investId = result.left.id;
+                        delete result.left.id;
+                        result.right.projectId = result.right.id;
+                        delete result.right.id;
+
+                        result = {...result.left, ...result.right}
+                        
+                        for (const invest of invests) {
+                            if (invest.projectId == result.projectId) {
+                                totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
+                            }
+                        }
+                        result.percent = ((totalInvested / parseFloat(project.request.amount)) * 100).toFixed(2);
+                    }
+                    
+                    res.status(200).json({ code: 200, data: results, message: "" })
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error });
+                    } else {
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                    }
+                });
+
+            
+            // res.status(200).json({ code: 200, data: data, message: "" })
         }).catch(error => {
             console.log(error);
             if (error) {
