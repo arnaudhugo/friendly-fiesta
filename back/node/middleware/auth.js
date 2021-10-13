@@ -35,7 +35,7 @@ function user() {
                         if (error) {
                             res.status(500).json({ code: 500, data: null, message: error });
                         } else {
-                            res.status(500).json({ code: 500, data: "123soleil", message: i18n.__('500') });
+                            res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
                         }
                     });
                 
