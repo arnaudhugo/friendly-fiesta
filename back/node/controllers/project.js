@@ -98,7 +98,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     }
 
                     result[0].advancement = {
-                        "percent": (totalAmount / parseFloat(result.request.amount)) * 100,
+                        "percent": (totalAmount / parseFloat(result[0].request.amount)) * 100,
                         "start_date": "timestamp",
                         "end_date": "timestamp",
                         "investors": {
