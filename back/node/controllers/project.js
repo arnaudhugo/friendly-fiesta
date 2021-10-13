@@ -109,7 +109,6 @@ router.get('/:id', auth.user(), async (req, res) => {
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
-                    console.log(invests)
                     let list = []
                     let totalAmount = 0;
                     let totalValid = 0;
