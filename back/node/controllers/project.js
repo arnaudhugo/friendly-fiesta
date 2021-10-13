@@ -35,7 +35,7 @@ router.get('/', auth.user(), async (req, res) => {
         .catch(error => {
             console.log(error);
             if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
+                res.status(500).json({ code: 500, data: null, message: error });
             } else {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
@@ -114,7 +114,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                 }).catch(error => {
                     console.log(error);
                     if (error) {
-                        res.status(500).json({ code: 500, data: null, message: error.msg });
+                        res.status(500).json({ code: 500, data: null, message: error });
                     } else {
                         res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
                     }
@@ -122,7 +122,7 @@ router.get('/:id', auth.user(), async (req, res) => {
         }).catch(error => {
             console.log(error);
             if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
+                res.status(500).json({ code: 500, data: null, message: error });
             } else {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
@@ -194,7 +194,7 @@ router.post('/', auth.user(), async (req, res) => {
         .catch(error => {
             console.log(error);
             if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
+                res.status(500).json({ code: 500, data: null, message: error });
             } else {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
@@ -268,7 +268,7 @@ router.put('/:id', auth.user(), async (req, res) => {
         .catch(error => {
             console.log(error);
             if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
+                res.status(500).json({ code: 500, data: null, message: error });
             } else {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
@@ -310,7 +310,7 @@ router.delete('/:id', auth.user(), async (req, res) => {
         .catch(error => {
             console.log(error);
             if (error) {
-                res.status(500).json({ code: 500, data: null, message: error.msg });
+                res.status(500).json({ code: 500, data: null, message: error });
             } else {
                 res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             }
