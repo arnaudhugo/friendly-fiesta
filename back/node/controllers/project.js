@@ -83,7 +83,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                     for (const invest of invests) {
                         if (invest.validated == true) {
                             totalAmount += parseFloat(invest.amount);
-                            if (parseFloat(invest.percent_proposal) < lowestPercent)
+                            if (!parseFloat(invest.percent_proposal) > lowestPercent)
                                 lowestPercent = parseFloat(invest.percent_proposal)
                         }
                         list.push({

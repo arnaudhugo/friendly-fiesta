@@ -134,7 +134,6 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(result => {
-            console.log(result)
             r.table('project')
                 .filter({ id: result[0].projectId })
                 .run(req._rdb)
