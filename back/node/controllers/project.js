@@ -132,11 +132,9 @@ router.get('/:id', auth.user(), async (req, res) => {
 
                     result[0].advancement = {
                         "percent": ((totalAmount / parseFloat(result[0].request.amount)) * 100).toFixed(2),
-                        "start_date": "timestamp",
-                        "end_date": "timestamp",
                         "investors": {
                             "stats": {
-                                "number": list.length,
+                                "number": totalValid,
                                 "average_invest": (totalAmount / totalValid).toFixed(2),
                                 "lowest_percent": lowestPercent
                             },

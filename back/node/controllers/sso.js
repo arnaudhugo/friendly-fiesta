@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
     const uuid = new TokenGenerator().generate();
     const body = {
         "apitoken":     config.apitoken,
-        "asked":        ['id', 'username', 'email'],
+        "asked":        ['id', 'username', 'email', 'lastname', 'firstname'],
         "valid_until":  180
     }
 

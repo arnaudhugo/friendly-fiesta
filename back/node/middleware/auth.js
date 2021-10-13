@@ -16,12 +16,16 @@ function user() {
                 console.log(`User verify, ${JSON.stringify(user)}`)
                 req.userId = user.payload.id;
                 req.username = user.payload.username;
+                req.lastname = user.payload.lastname;
+                req.firstname = user.payload.firstname;
                 req.email = user.payload.email;
 
                 r.table('user')
                     .insert({
                         id: req.userId,
                         username: req.username,
+                        lastname: req.lastname,
+                        firstname: req.firstname,
                         email: req.email
                     })
                     .run(req._rdb)
