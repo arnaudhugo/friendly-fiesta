@@ -85,8 +85,31 @@ router.get('/', auth.user(), async (req, res) => {
         .filter({ userId: req.userId })
         .run(req._rdb)
         .then(cursor => cursor.toArray())
-        .then(result => {
-            res.status(200).json({ code: 200, data: result, message: "" })
+        .then(projects => {
+            r.table('invest')
+                .run(req._rdb)
+                .then(cursor => cursor.toArray())
+                .then(invests => {
+                    for (let project of projects) {
+                        let totalInvested = 0;
+                        for (const invest of invests) {
+                            if (invest.projectId == project.id) {
+                                totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
+                            }
+                        }
+                        project.percent = ((totalInvested / parseFloat(project.request.amount)) * 100).toFixed(2);
+                    }
+                    
+                    res.status(200).json({ code: 200, data: projects, message: "" })
+                }).catch(error => {
+                    console.log(error);
+                    if (error) {
+                        res.status(500).json({ code: 500, data: null, message: error });
+                    } else {
+                        res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+                    }
+                });
+            // res.status(200).json({ code: 200, data: result, message: "" })
         }).catch(error => {
             console.log(error);
             if (error) {
