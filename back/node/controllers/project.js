@@ -10,6 +10,37 @@ const tableName = "project";
 
 /**
 * @swagger
+* /project/all:
+*   get:
+*     tags:
+*       - Project
+*     name: Get all project
+*     summary: Return all project
+*     consumes:
+*       - application/json
+*     responses:
+*       200:
+*         description: Ok
+*       500:
+*         description: 'Bad request : something went wrong.'
+*/
+router.get('/all', async (req, res) => {
+    r.table(tableName)
+        .run(req._rdb)
+        .then(cursor => cursor.toArray())
+        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
+        .catch(error => {
+            console.log(error);
+            if (error) {
+                res.status(500).json({ code: 500, data: null, message: error });
+            } else {
+                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
+            }
+        });
+});
+
+/**
+* @swagger
 * /project:
 *   get:
 *     security:
@@ -120,37 +151,6 @@ router.get('/:id', auth.user(), async (req, res) => {
                     }
                 });
         }).catch(error => {
-            console.log(error);
-            if (error) {
-                res.status(500).json({ code: 500, data: null, message: error });
-            } else {
-                res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
-            }
-        });
-});
-
-/**
-* @swagger
-* /project/all:
-*   get:
-*     tags:
-*       - Project
-*     name: Get all project
-*     summary: Return all project
-*     consumes:
-*       - application/json
-*     responses:
-*       200:
-*         description: Ok
-*       500:
-*         description: 'Bad request : something went wrong.'
-*/
-router.get('/all', async (req, res) => {
-    r.table(tableName)
-        .run(req._rdb)
-        .then(cursor => cursor.toArray())
-        .then(result => res.status(200).json({ code: 200, data: result, message: "" }))
-        .catch(error => {
             console.log(error);
             if (error) {
                 res.status(500).json({ code: 500, data: null, message: error });
