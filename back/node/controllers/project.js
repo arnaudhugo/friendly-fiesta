@@ -51,7 +51,7 @@ router.get('/all', async (req, res) => {
             //             res.status(500).json({ code: 500, data: null, message: i18n.__('500') });
             //         }
             //     });
-            for (const project of projects) {
+            for (let project of projects) {
                 console.log(project)
                 r.table('invest')
                     .filter({ projectId: project.id })
@@ -65,6 +65,7 @@ router.get('/all', async (req, res) => {
                             }
                         }
                         console.log(totalAmount)
+                        project.totalAmount = totalAmount;
     
                         // result[0].totalAmount = totalAmount;
                         // res.status(200).json({ code: 200, data: result, message: "" })
@@ -77,8 +78,8 @@ router.get('/all', async (req, res) => {
                         }
                     });
             }
-            console.log(result)
-            res.status(200).json({ code: 200, data: result, message: "" })
+            // console.log(projects)
+            res.status(200).json({ code: 200, data: projects, message: "" })
         }).catch(error => {
             console.log(error);
             if (error) {
