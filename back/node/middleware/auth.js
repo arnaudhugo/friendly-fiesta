@@ -27,7 +27,7 @@ function user() {
                         lastname: req.lastname,
                         firstname: req.firstname,
                         email: req.email
-                    }, {conflict: "update"})
+                    }, {conflict: "replace"})
                     .run(req._rdb)
                     .then(result => next())
                     .catch(error => {
