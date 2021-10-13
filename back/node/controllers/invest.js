@@ -68,7 +68,7 @@ router.get('/', auth.user(), async (req, res) => {
 *             amount:
 *               type: float
 *             percent_proposal:
-*               type: string
+*               type: float
 *         required: true
 *     responses:
 *       200:
@@ -78,6 +78,7 @@ router.get('/', auth.user(), async (req, res) => {
 */
 router.post('/:id', auth.user(), async (req, res) => {
     const projectId = req.params.id;
+    console.log(req.usrtoken)
 
     let project = {
         userId:             req.usrtoken,
