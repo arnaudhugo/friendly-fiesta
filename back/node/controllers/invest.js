@@ -47,6 +47,7 @@ router.get('/', auth.user(), async (req, res) => {
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
+                    console.log(results)
                     for (let result of results) {
                         let totalInvested = 0;
 
