@@ -33,22 +33,22 @@ router.get('/', auth.user(), async (req, res) => {
         .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(results => {
-            // let data = [];
+            let data = [];
             for (let result of results) {
                 result.left.investId = result.left.id;
                 delete result.left.id;
                 result.right.projectId = result.right.id;
                 delete result.right.id;
 
-                result = {...result.left, ...result.right}
+                data = {...result.left, ...result.right}
             }
 
             r.table('invest')
                 .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
-                    console.log(results)
-                    for (let result of results) {
+                    console.log(data)
+                    for (let result of data) {
                         let totalInvested = 0;
 
                         
@@ -61,7 +61,7 @@ router.get('/', auth.user(), async (req, res) => {
                         result.percent = ((totalInvested / parseFloat(result.request.amount)) * 100).toFixed(2);
                     }
                     
-                    res.status(200).json({ code: 200, data: results, message: "" })
+                    res.status(200).json({ code: 200, data: data, message: "" })
                 }).catch(error => {
                     console.log(error);
                     if (error) {
