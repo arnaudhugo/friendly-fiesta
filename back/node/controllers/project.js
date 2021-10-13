@@ -79,12 +79,14 @@ router.get('/:id', auth.user(), async (req, res) => {
                 .then(invests => {
                     let list = []
                     let totalAmount = 0;
+                    let totalValid = 0;
                     let lowestPercent = 9999;
                     for (const invest of invests) {
                         if (invest.validated == true) {
                             totalAmount += parseFloat(invest.amount);
+                            totalValid += 1;
                             if (parseFloat(invest.percent_proposal) < lowestPercent)
-                                lowestPercent = parseFloat(invest.percent_proposal)
+                                lowestPercent = parseFloat(invest.percent_proposal);
                         }
                         list.push({
                             id:         invest.id,
@@ -102,7 +104,7 @@ router.get('/:id', auth.user(), async (req, res) => {
                         "investors": {
                             "stats": {
                                 "number": list.length,
-                                "average_invest": 300.00,
+                                "average_invest": (totalAmount / totalValid).toFixed(2),
                                 "lowest_percent": lowestPercent
                             },
                             "list": list
