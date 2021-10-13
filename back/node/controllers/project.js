@@ -26,9 +26,11 @@ const tableName = "project";
 */
 router.get('/all', async (req, res) => {
     r.table(tableName)
+        .run(req._rdb)
         .then(cursor => cursor.toArray())
         .then(projects => {
             r.table('invest')
+                .run(req._rdb)
                 .then(cursor => cursor.toArray())
                 .then(invests => {
                     for (let project of projects) {
