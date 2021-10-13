@@ -265,7 +265,7 @@ router.post('/valid/:id', auth.user(), async (req, res) => {
                     .filter({ id: investId, projectId: result[0].projectId })
                     .update({
                         docGen:     true,
-                        docUrl:     ""
+                        docUrl:     "https://avocats-maateis.fr/wp-content/uploads/2014/06/pret-dargent-entre-particuliers.pdf"
                     })
                     .run(req._rdb)
                     .then(resultUp => res.status(200).json({ code: 200, data: resultUp, message: "" }))
