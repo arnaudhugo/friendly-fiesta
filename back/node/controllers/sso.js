@@ -42,8 +42,6 @@ router.get('/', async (req, res) => {
         }
     )
     response = await response.json();
-
-    console.log(response)
     
     await test_db.setInfo(uuid, {key: response.data.key, secret: response.data.secret})
 
