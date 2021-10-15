@@ -54,8 +54,10 @@ router.get('/', auth.user(), async (req, res) => {
                         
                         
                         for (const invest of invests) {
-                            if (invest.projectId == result.projectId) {
-                                totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
+                            if (invest.validated == true) {
+                                if (invest.projectId == result.projectId) {
+                                    totalInvested += (invest.amount ? parseFloat(invest.amount) : 0);
+                                }
                             }
                         }
                         result.percent = ((totalInvested / parseFloat(result.request.amount)) * 100).toFixed(2);
